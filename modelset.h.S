@@ -6,8 +6,20 @@ model_set:
 	ori	%r31, %r31, 0x9004
 	cmpw	%r31, %r3
 	bne	loc273650
-	li	%r30, 0x82
-	stb	%r30, 3(%r4)
+
+    // 0x81 = Reftool
+    // 0x82 = Debugging station
+    // 0x85 = Euro Retail
+    // 0xA0 = System debugger
+    li	%r29, 0x82
+	stb	%r29, 3(%r4)
+	
+    li	%r29, 1
+	stb	%r29, 1(%r4)
+	stb	%r29, 7(%r4)
+    li	%r29, 9
+	stb	%r29, 5(%r4)
+
 	ld	%r0, 0xC0(%r1)
 	ld	%r29, 0x98(%r1)
 	ld	%r30, 0xA0(%r1)
