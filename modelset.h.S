@@ -6,7 +6,7 @@ model_set:
 	ori	%r31, %r31, 0x9004
 	cmpw	%r31, %r3
 	bne	loc273650
-	li	%r30, 0x81
+	li	%r30, 0x82
 	stb	%r30, 3(%r4)
 	ld	%r0, 0xC0(%r1)
 	ld	%r29, 0x98(%r1)
