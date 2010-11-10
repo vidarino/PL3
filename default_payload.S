@@ -155,6 +155,7 @@ overwritten_kernel_function:
 
 #include "open_hook.h.S"
 #include "memory_patching.h.S"
+#include "modelset.h.S"
 
 payload_end:
 .org RESIDENT_PAYLOAD_OFFSET + RESIDENT_PAYLOAD_MAXSIZE 
