@@ -122,7 +122,7 @@ patch_table:
 	PATCH_INST(patch_func8 + patch_func8_offset2, nop)
 	PATCH_INST(patch_func9 + patch_func9_offset, nop)
 #ifdef patch_func20
-	// patch model number to allow PSN access
+	// patch station model number
 	PATCH_BRANCH_MEM2 (patch_func20 + patch_func20_offset, b, model_set)
 #endif
 	.long	0
