@@ -52,6 +52,8 @@
 #define patch_func8_offset2	0x208 //lv2open update patch
 #define patch_func9		0x4F840 // must upgrade error
 #define patch_func9_offset	0x3EC
+#define patch_func20		0x273f98
+#define patch_func20_offset	0x0
 #define patch_data1		0x3ba890
 #define rtoc_entry_1		0xf08
 #define rtoc_entry_2		-0x6a00
@@ -258,6 +260,8 @@
 #define patch_func8_offset2	0x1CC
 #define patch_func9		0x4F30C // must upgrade error
 #define patch_func9_offset	0x3EC
+#define patch_func20		0x27364c
+#define patch_func20_offset	0x0
 #define patch_data1		0x3B9910
 #define rtoc_entry_1		0xd58
 #define rtoc_entry_2		-0x6b08
