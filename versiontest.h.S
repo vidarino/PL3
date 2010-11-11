@@ -32,7 +32,7 @@ syscall_process_sdkversion_desc:
 syscall_process_sdkversion:
 	lis	%r5, 0x0100
 	ori	%r5, %r5, 0x0300
-	cmpwi	%r3, %r5
+	cmpw	%r3, %r5
 	bne	orig_func // if not vsh pid, return to orig proc
 	lis	%r5, 0x35 // 3.50 sdk version
 	stw	%r5, 0(%r4)
