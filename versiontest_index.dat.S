@@ -1,4 +1,5 @@
 
+
 version_str:
 	.ascii "release:03.5000:\n"
 	.ascii "build:46135,20100721:tetsu@tetsu-linux22.rd.scei.sony.co.jp\n"

@@ -21,9 +21,12 @@
 //#define FIRMWARE_3_01
 
 /* Enable model version patching */
+/* Only works for firmwares 3.41 and 3.15 */
 #define MODELSET
 
 /* Enable firmware 3.50 spoofing */
+/* Only works for firmware 3.41 */
 #define VERSIONTEST
 
 #endif /* PL3_CONFIG_H */
+

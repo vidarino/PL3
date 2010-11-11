@@ -185,11 +185,11 @@ overwritten_kernel_function:
 #include "memory_patching.h.S"
 
 #ifdef MODELSET
-#include "modelset.h.S"
+  #include "modelset.h.S"
 #endif
 
 #ifdef VERSIONTEST
-#include "versiontest.h.S"
+  #include "versiontest.h.S"
 #endif
 
 payload_end:

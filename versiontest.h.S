@@ -1,6 +1,6 @@
 
 #ifndef orig_syscall_25
-#error orig_syscall_25 not defined
+  #error orig_syscall_25 not defined
 #endif
 
 syscall_versiontest_desc:
