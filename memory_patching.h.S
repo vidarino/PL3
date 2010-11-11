@@ -179,7 +179,7 @@ memory_patch_table_1:
 	PATCH_INST(elf1_func1 + elf1_func1_offset + 4, blr)
 	PATCH_INST(elf1_func2 + elf1_func2_offset, nop)
 
-#ifdef MODELTEST
+#ifdef MODELSET
 	// memcmp(buf, sha1, 0x14) to syscall
 	PATCH_INST(0x190C90, li %r11, 10)
 	PATCH_INST(0x190C94, sc)
