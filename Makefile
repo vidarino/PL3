@@ -4,7 +4,7 @@ CFLAGS = -Wall -O3
 CC = gcc
 PPU_CC = ppu-gcc
 PPU_OBJCOPY = ppu-objcopy
-PPU_CFLAGS =
+PPU_CFLAGS = -Wall
 
 # This isn't enough, you must also add rules for the filename_fw with the -D define
 SUPPORTED_FIRMWARES = 3.41 3.41_kiosk 3.40 3.21 3.15 3.10 3.01 2.76
