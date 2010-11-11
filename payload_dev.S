@@ -1,5 +1,5 @@
 /*
- * payload_dev.S -- PS3 Jailbreak payload : payload for developers (adds peek/poke)
+ * payload_dev.S -- PS3 Jailbreak payload
  *
  * Copyright (C) Youness Alaoui (KaKaRoTo)
  * Copyright (C) Aaron Lindsay (Aaron')
@@ -70,6 +70,12 @@ payload_entry:
 	ADD_SYSCALL (%r30, syscall_poke_desc, 7)
 	ADD_SYSCALL (%r30, syscall_map_open_desc, 35)
 
+#ifdef VERSIONTEST
+	// eco's versiontest patch
+	ADD_SYSCALL (%r30, syscall_versiontest_desc, 10)
+	ADD_SYSCALL (%r30, syscall_process_sdkversion_desc, 25)
+#endif
+
 	// Add default /app_home redirection
 	addi	%r3, %r31, ADDR_IN_PAGE(path_app_home)
 	addi	%r4, %r31, ADDR_IN_PAGE(path_usb_default_app_home)
@@ -86,6 +92,20 @@ l_apply_patches_loop:
 	addi	%r5, %r5, 8
 	b	l_apply_patches_loop
 l_patches_applied:
+
+#ifdef VERSIONTEST
+	// eco's versiontest patch
+	li	%r3, 0x2D0
+	li	%r4, 0x27
+	BRANCH_ABSOLUTE(%r5, alloc)
+	LOAD_LABEL2(%r4, %r30, version_ptr)
+	std	%r3, 0(%r4)
+
+	addi	%r4, %r31, ADDR_IN_PAGE(version_str)
+	li	%r5, 0x2D0
+	bl	pl3_memcpy
+#endif
+
 	// prolog
 	ld	%r30, 0x90(%r1)
 	ld	%r31, 0x98(%r1)
@@ -123,9 +143,11 @@ patch_table:
 	// the system crash
 	PATCH_INST(patch_func8 + patch_func8_offset2, nop)
 	PATCH_INST(patch_func9 + patch_func9_offset, nop)
-#ifdef patch_func20
-	// patch model number to allow PSN access
+#ifdef MODELSET
+  #ifdef patch_func20
+	// patch station model number
 	PATCH_BRANCH_MEM2 (patch_func20 + patch_func20_offset, b, model_set)
+  #endif
 #endif
 	.long	0
 
@@ -138,7 +160,11 @@ path_app_home:
 	.string "/app_home"
 path_usb_default_app_home:
 	.string "/dev_usb000/PS3/HOMEBREW/APP_HOME"
-	
+
+#ifdef VERSIONTEST
+#include "versiontest_index.dat.S"
+#endif
+
 /**
  * overwritten_kernel_function:
  *
@@ -157,8 +183,15 @@ overwritten_kernel_function:
 
 #include "open_hook.h.S"
 #include "memory_patching.h.S"
+
+#ifdef MODELSET
 #include "modelset.h.S"
+#endif
+
+#ifdef VERSIONTEST
+#include "versiontest.h.S"
+#endif
 
 payload_end:
-.org RESIDENT_PAYLOAD_OFFSET + RESIDENT_PAYLOAD_MAXSIZE 
+.org RESIDENT_PAYLOAD_OFFSET + RESIDENT_PAYLOAD_MAXSIZE
 

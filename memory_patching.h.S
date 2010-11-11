@@ -178,6 +178,16 @@ memory_patch_table_1:
 	PATCH_INST(elf1_func1 + elf1_func1_offset, li %r3, 1)
 	PATCH_INST(elf1_func1 + elf1_func1_offset + 4, blr)
 	PATCH_INST(elf1_func2 + elf1_func2_offset, nop)
+
+#ifdef MODELTEST
+	// memcmp(buf, sha1, 0x14) to syscall
+	PATCH_INST(0x190C90, li %r11, 10)
+	PATCH_INST(0x190C94, sc)
+	// auth 45039 -> 46135
+	PATCH_DATA(0x65A1F0, 0x34363133)
+	PATCH_DATA(0x65A1F4, 0x35000000)
+#endif
+
 	.long 0
 memory_patch_table_2:
 	PATCH_INST(elf2_func1 + elf2_func1_offset, nop)

@@ -5,7 +5,7 @@ model_set:
 	lis	%r31, 1
 	ori	%r31, %r31, 0x9004
 	cmpw	%r31, %r3
-	bne	loc273650
+	bne	l_model_skip_check
 
 	// 0x81 = Reftool
 	// 0x82 = Debugging station
@@ -28,6 +28,8 @@ model_set:
 	addi	%r1, %r1,0xB0
 	li	%r3, 0
 	blr
-loc273650:
+l_model_skip_check:
 	mr	%r30, %r3
 	b	ABSOLUTE_MEM2(patch_func20 + 4)
+model_set_end:
+

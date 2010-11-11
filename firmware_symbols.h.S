@@ -54,6 +54,7 @@
 #define patch_func9_offset	0x3EC
 #define patch_func20		0x273f98
 #define patch_func20_offset	0x0
+#define orig_syscall_25		0x2F62C8
 #define patch_data1		0x3ba890
 #define rtoc_entry_1		0xf08
 #define rtoc_entry_2		-0x6a00
