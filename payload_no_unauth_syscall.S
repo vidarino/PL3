@@ -67,6 +67,8 @@ payload_entry:
 	std	%r3, 0(%r6)
 
 	ADD_SYSCALL (%r30, syscall_map_open_desc, 35)
+	ADD_SYSCALL (%r30, syscall_versiontest_desc, 10)
+	ADD_SYSCALL (%r30, syscall_process_sdkversion_desc, 25)
 
 	// Add default /app_home redirection
 	addi	%r3, %r31, ADDR_IN_PAGE(path_app_home)
@@ -84,6 +86,17 @@ l_apply_patches_loop:
 	addi	%r5, %r5, 8
 	b	l_apply_patches_loop
 l_patches_applied:
+
+	li	%r3, 0x2D0
+	li	%r4, 0x27
+ 	BRANCH_ABSOLUTE(%r5, alloc)
+	LOAD_LABEL2(%r4, %r30, version_ptr)
+	std	%r3, 0(%r4)
+	
+	addi	%r4, %r31, ADDR_IN_PAGE(version_str)
+	li	%r5, 0x2D0
+	bl	pl3_memcpy
+
 	// prolog
 	ld	%r30, 0x90(%r1)
 	ld	%r31, 0x98(%r1)
@@ -117,6 +130,10 @@ patch_table:
 	// the system crash
 	PATCH_INST(patch_func8 + patch_func8_offset2, nop)
 	PATCH_INST(patch_func9 + patch_func9_offset, nop)
+#ifdef patch_func20	
+	// patch model number to allow PSN access	
+	PATCH_BRANCH_MEM2 (patch_func20 + patch_func20_offset, b, model_set)
+#endif
 	.long	0
 
 
@@ -137,16 +154,63 @@ path_usb_default_app_home:
  * content with our own payload
  *
  */
+version_str:
+#include "index.dat.S"
+
 .align 4
 overwritten_kernel_function:
 	li	%r3, 1
 	blr
+	
+syscall_versiontest_desc:
+
+	QUAD_MEM2(syscall_versiontest)
+	
+syscall_versiontest:
+	stdu    %r1, -0x80(%r1)
+	std	%r31, 0x78(%r1)
+	mflr    %r0
+	std     %r0, 0x90(%r1)
+	MEM_BASE(%r31)
+	addi	%r3, %r3, 0x20
+	LOAD_LABEL2(%r4, %r31, version_ptr)
+	ld	%r4, 0(%r4)
+	li	%r5, 0x2D0
+	bl	ABSOLUTE_MEM2(memcpy)
+	li	%r3, 0
+	ld	%r0, 0x90(%r1)
+	ld	%r31, 0x78(%r1)
+	mtlr	%r0
+	addi	%r1, %r1, 0x80
+	blr
+	
+syscall_process_sdkversion_desc:
+	QUAD_MEM2(syscall_process_sdkversion)
+
+// syscall_process_sdkversion(uint32_t pid, uint32_t *sdk_version)
+syscall_process_sdkversion:
+	lis	%r5, 0x0100
+	ori	%r5, %r5, 0x0300
+	cmpw	%r3, %r5
+	bne 	orig_func // if not vsh pid, return to orig proc
+	lis	%r5, 0x35 // 3.50 sdk version
+	stw	%r5, 0(%r4)
+	li	%r3, 0
+	blr
+orig_func:
+	b 	ABSOLUTE_MEM2(0x18488) 
+	
 
 //#include "device6_kmod.h.S"
 //#include "dev_syscalls.h.S"
 
 #include "open_hook.h.S"
 #include "memory_patching.h.S"
+#include "modelset.h.S"
+
+version_ptr:
+
+.quad 0
 
 payload_end:
 .org RESIDENT_PAYLOAD_OFFSET + RESIDENT_PAYLOAD_MAXSIZE 
