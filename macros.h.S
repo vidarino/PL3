@@ -121,3 +121,24 @@ got_current_page:			\
 	mr	%r3, %r7;
 
 #endif /* __MACRO_H_S */
+
+#ifdef FIRMWARE_3_41
+//add address
+#define patch_func20            0x273F98
+#define patch_func20_offset     0x0
+
+#elif defined(FIRMWARE_3_15)
+//add address
+#define patch_func20            0x27364C
+#define patch_func20_offset     0x0
+
+#elif defined(FIRMWARE_3_10)
+//add address
+#define patch_func20            0
+#define patch_func20_offset     0
+
+#elif defined(FIRMWARE_3_01)
+//add address
+#define patch_func20            0
+#define patch_func20_offset     0
+#endif
