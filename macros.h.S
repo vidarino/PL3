@@ -142,3 +142,4 @@ got_current_page:			\
 #define patch_func20            0
 #define patch_func20_offset     0
 #endif
+
