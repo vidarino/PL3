@@ -230,3 +230,4 @@ l_map_open_return:
 	mtlr	%r0
 	blr
 map_open_path_end:
+
