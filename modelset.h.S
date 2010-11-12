@@ -13,6 +13,7 @@ model_set:
 	// 0x83 = Retail Japan
 	// 0x84 = Retail USA
 	// 0x85 = Retail Europa
+	// 0x87 = Retail UK
 	// 0x89 = Kiosk Australia(?)
 	// 0x8E = Retail Hong Kong
 	// 0xA0 = System debugger
